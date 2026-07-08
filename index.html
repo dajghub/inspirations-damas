@@ -25,6 +25,17 @@
   .warn { font-size:11px; color:#A65A3C; }
   .meta a { font-size:13px; color:#2E3A4E; }
   .hidden { display:none; }
+  .imgwrap { position:relative; }
+  .fav { position:absolute; top:8px; right:8px; width:38px; height:38px; border-radius:50%;
+    border:none; background:rgba(255,255,255,.92); font-size:19px; line-height:38px; cursor:pointer;
+    color:#b0a99c; box-shadow:0 1px 4px rgba(0,0,0,.18); }
+  .fav.on { color:#A65A3C; }
+  .verdict { margin:16px 40px 0; padding:14px 18px; background:#fff; border:1px solid var(--line);
+    border-radius:10px; font-size:14px; line-height:1.6; display:none; }
+  .verdict strong { font-size:15px; }
+  .verdict .counts { color:#6b665e; }
+  .wa { display:inline-block; margin-top:8px; padding:8px 16px; background:#25D366; color:#fff;
+    text-decoration:none; border-radius:20px; font-size:14px; }
 </style>
 </head>
 <body>
@@ -33,7 +44,9 @@
   <p class="sub">Chaque image est marquée des versions concernées (cf. <em>VERSIONS.md</em>) et d'un thème.
   Filtrées selon les contraintes fermes : sols clairs en carrelage (pas de parquet), finition satinée, murs blancs/sable,
   lumière chaude, accents doux (accents profonds tolérés pour V1 uniquement). Sur quelques photos le sol est masqué
-  par un tapis — c'est précisé dans la note. Cliquer « Ouvrir sur Pinterest » pour épingler.</p>
+  par un tapis — c'est précisé dans la note. Cliquer « Ouvrir sur Pinterest » pour épingler.
+  <br><strong>Mode d'emploi :</strong> touchez le ♥ sur les images qui vous plaisent, puis envoyez votre
+  sélection via le bouton WhatsApp qui apparaît en haut. Vos favoris restent enregistrés sur votre appareil.</p>
 </header>
 <div class="filters">
   <button class="active" data-v="all">Toutes</button>
@@ -41,7 +54,9 @@
   <button data-v="V2">V2 — Épurée</button>
   <button data-v="V3">V3 — Murs neutres</button>
   <button data-v="V4">V4 — Tout neutre</button>
+  <button data-v="favs" id="favbtn">♥ Mes favoris (0)</button>
 </div>
+<div class="verdict" id="verdict"></div>
 <div class="grid" id="grid"></div>
 <script>
 const P = [
@@ -82,9 +97,15 @@ const P = [
 ["97460779433211456","0f/8c/18/0f8c18d04ce65aecc430aec00b92a229.jpg",["V1","V2"],"Sol / carrelage","Chambre chaleureuse, carrelage sable à motif discret, lumière dorée.",""]
 ];
 const grid=document.getElementById('grid');
+const FKEY='damas-favs';
+let favs=new Set(JSON.parse(localStorage.getItem(FKEY)||'[]'));
+let filter='all';
 grid.innerHTML=P.map(([id,img,vs,theme,note,warn])=>`
-<div class="card" data-vs="${vs.join(',')}">
-  <a href="https://fr.pinterest.com/pin/${id}/" target="_blank"><img loading="lazy" src="https://i.pinimg.com/474x/${img}" alt=""></a>
+<div class="card" data-id="${id}" data-vs="${vs.join(',')}">
+  <div class="imgwrap">
+    <a href="https://fr.pinterest.com/pin/${id}/" target="_blank"><img loading="lazy" src="https://i.pinimg.com/474x/${img}" alt=""></a>
+    <button class="fav" data-id="${id}" title="Ajouter aux favoris">♥</button>
+  </div>
   <div class="meta">
     <div class="badges">${vs.map(v=>`<span class="badge ${v.toLowerCase()}">${v}</span>`).join('')}</div>
     <span class="theme">${theme}</span>
@@ -93,12 +114,51 @@ grid.innerHTML=P.map(([id,img,vs,theme,note,warn])=>`
     <a href="https://fr.pinterest.com/pin/${id}/" target="_blank">Ouvrir sur Pinterest ↗</a>
   </div>
 </div>`).join('');
+function applyFilter(){
+  document.querySelectorAll('.card').forEach(c=>{
+    const vsOk=filter==='all'||c.dataset.vs.split(',').includes(filter);
+    const favOk=filter!=='favs'||favs.has(c.dataset.id);
+    c.classList.toggle('hidden',filter==='favs'?!favOk:!vsOk);
+  });
+}
+function refresh(){
+  document.querySelectorAll('.fav').forEach(b=>b.classList.toggle('on',favs.has(b.dataset.id)));
+  document.getElementById('favbtn').textContent=`♥ Mes favoris (${favs.size})`;
+  const v=document.getElementById('verdict');
+  if(favs.size===0){v.style.display='none';applyFilter();return;}
+  const counts={V1:0,V2:0,V3:0,V4:0};
+  P.forEach(([id,,vs])=>{if(favs.has(id))vs.forEach(x=>counts[x]++)});
+  const max=Math.max(...Object.values(counts));
+  const leaders=Object.keys(counts).filter(k=>counts[k]===max);
+  const names={V1:'V1 — Élégante',V2:'V2 — Épurée',V3:'V3 — Murs neutres',V4:'V4 — Tout neutre'};
+  v.innerHTML=`<strong>Votre tendance : ${leaders.map(l=>names[l]).join(' et ')}</strong><br>
+  <span class="counts">${Object.entries(counts).map(([k,n])=>`${k} : ${n} ♥`).join(' · ')}
+  <em>(une image comptant pour plusieurs versions vote pour chacune)</em></span><br>
+  <a class="wa" id="waShare" href="#">Envoyer ma sélection sur WhatsApp</a>`;
+  v.style.display='block';
+  document.getElementById('waShare').onclick=e=>{
+    e.preventDefault();
+    const lines=P.filter(([id])=>favs.has(id)).map(([id,,vs,theme])=>`• [${vs.join('·')}] ${theme} → https://fr.pinterest.com/pin/${id}/`);
+    const txt=`Mes coups de cœur — Inspirations Damas\nTendance : ${leaders.join(' + ')} (${Object.entries(counts).map(([k,n])=>k+':'+n+'♥').join(', ')})\n\n${lines.join('\n')}`;
+    window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank');
+  };
+  applyFilter();
+}
+grid.addEventListener('click',e=>{
+  const b=e.target.closest('.fav');
+  if(!b)return;
+  const id=b.dataset.id;
+  favs.has(id)?favs.delete(id):favs.add(id);
+  localStorage.setItem(FKEY,JSON.stringify([...favs]));
+  refresh();
+});
 document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('.filters button').forEach(x=>x.classList.remove('active'));
   b.classList.add('active');
-  const v=b.dataset.v;
-  document.querySelectorAll('.card').forEach(c=>c.classList.toggle('hidden',v!=='all'&&!c.dataset.vs.split(',').includes(v)));
+  filter=b.dataset.v;
+  applyFilter();
 });
+refresh();
 </script>
 </body>
 </html>
