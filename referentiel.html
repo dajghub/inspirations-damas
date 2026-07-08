@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Référentiel couleurs — Appartement de Barzeh, Damas</title>
+<style>
+  :root { --ink:#2E2B28; --bg:#F7F5F1; --card:#FFFFFF; --line:#E4DFD5; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:Georgia,'Times New Roman',serif; background:var(--bg); color:var(--ink); }
+  header { padding:28px 40px 10px; }
+  h1 { font-size:24px; margin:0 0 6px; font-weight:normal; }
+  .sub { font-size:14px; color:#6b665e; max-width:760px; line-height:1.5; }
+  .sub a { color:#2E3A4E; }
+  .tabs { padding:12px 40px 4px; display:flex; gap:8px; flex-wrap:wrap; position:sticky; top:0; background:var(--bg); z-index:5; border-bottom:1px solid var(--line); }
+  .tabs button { font-family:inherit; font-size:14px; padding:7px 16px; border:1px solid var(--line); background:var(--card); border-radius:20px; cursor:pointer; }
+  .tabs button.active { background:var(--ink); color:#fff; border-color:var(--ink); }
+  .intro { margin:16px 40px 0; font-size:14px; color:#6b665e; max-width:820px; line-height:1.5; }
+  .accords { padding:16px 40px 8px; display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:16px; }
+  .accord { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px 16px; }
+  .accord h3 { margin:0; font-size:17px; font-weight:normal; }
+  .accord .wada { font-size:12px; color:#8a8478; font-style:italic; margin:2px 0 10px; }
+  .star { color:#C08A3E; font-size:13px; }
+  .strip { display:flex; height:44px; border-radius:6px; overflow:hidden; border:1px solid rgba(0,0,0,.08); }
+  .strip div { flex:1; }
+  .labels { display:flex; font-size:11px; color:#6b665e; margin:4px 0 8px; }
+  .labels span { flex:1; }
+  .accord p { font-size:13px; line-height:1.5; margin:6px 0 0; }
+  .avis { margin:8px 40px 40px; padding:16px 20px; background:var(--card); border:1px solid var(--line); border-radius:10px; font-size:14px; line-height:1.6; max-width:900px; }
+  .avis h2 { font-size:17px; font-weight:normal; margin:0 0 6px; }
+  .pdfs { font-size:13px; color:#6b665e; }
+  @media (max-width:640px){
+    header { padding:16px 14px 8px; } h1 { font-size:19px; }
+    .tabs { padding:8px 10px 4px; gap:6px; } .tabs button { font-size:13px; padding:6px 12px; }
+    .accords { padding:12px 10px 6px; grid-template-columns:1fr; gap:10px; }
+    .intro,.avis { margin-left:10px; margin-right:10px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Référentiel couleurs — les 8 accords par version</h1>
+  <p class="sub">Propositions de l'architecte (juillet 2026), d'après <em>A Dictionary of Color Combinations</em> de
+  Sanzo Wada. Un seul grès cérame satiné (« 1/4 brillant ») 60×60 posé partout ; répartition 60 % murs · 30 % sol ·
+  10 % accent ; mobilier bois clair. ★ = combinaison recommandée par l'architecte.
+  &nbsp;<a href="index.html">← Retour aux inspirations</a></p>
+</header>
+<div class="tabs" id="tabs"></div>
+<p class="intro" id="intro"></p>
+<div class="accords" id="accords"></div>
+<div class="avis" id="avis"></div>
+<script>
+const DESC2={
+"01":"Le plus épuré : un camaïeu de blancs chauds, l'accent n'est qu'un gris naturel à peine plus soutenu — encadrements, textile, céramique brute.",
+"02":"Ton sur ton chaleureux, sans aucune rupture. La ficelle relie le sol au bois clair — rideaux de lin, vannerie, abat-jour.",
+"03":"La version la plus fraîche et silencieuse. Les gris tempèrent la lumière chaude de Damas ; idéal si vous aimez les intérieurs galerie.",
+"04":"Une chaleur discrète, minérale. L'argile pâle réchauffe sans jamais trancher — enduit d'un pan de mur, poteries, tomettes d'appoint.",
+"05":"Le seul accent teinté, mais très désaturé : une sauge grisée qui apporte une respiration végétale sans casser la sobriété.",
+"06":"Textile et enveloppant : trois neutres de la même famille, seule la valeur change. Parfait avec lin lavé, laine bouclée et bois clair.",
+"07":"Presque monochrome, avec un mur très légèrement verdi qui adoucit la lumière du matin. L'amande en textile de lit ou céramique.",
+"08":"Une douceur poudrée à peine perceptible. Le gris nuage évite le côté sucré — rideaux, tapis, petit mobilier."};
+const N2=["Craie & Galet|12","Ivoire & Ficelle|33","Perle & Brume|58","Sable & Argile pâle|96","Coquille & Sauge|104","Lin & Grège|141","Blanc chaud & Amande|167","Perle rosée & Nuage|215"];
+const AVIS_EPURE="« En version épurée, tout se joue en camaïeu : les accents sont eux-mêmes des neutres, la profondeur vient des matières. Ma recommandation : <strong>02 — Ivoire & Ficelle</strong>, le plus naturellement accordé au bois clair. Pour une pointe de fraîcheur, <strong>05 — Coquille & Sauge</strong>. »";
+const ETAPE="<br><br><strong>Étape suivante :</strong> commander 2–3 dalles d'essai des accords retenus et les observer sur place à midi et en fin de journée — la lumière de Damas réchauffe nettement les teintes. Peindre un échantillon mural d'1 m² à côté avant de valider.";
+const V={
+V1:{titre:"V1 — Élégante, sols clairs",pdf:"Reno_Damas_V1.pdf",
+intro:"Base très claire, le caractère vient d'accents profonds. Sols clairs uniquement ; le contraste élégant se joue dans l'accent.",
+avis:"« Sols et murs restant tous clairs, le contraste élégant se joue désormais dans l'accent. Ma première recommandation : <strong>01 — Sable & Encre</strong> — base sable/craie très lumineuse, caractère net par le bleu encre. Pour une version plus douce et chaleureuse, <strong>02 — Craie & Laiton</strong>. »",
+acc:[["Sable & Encre","145","#F6F2E8|blanc craie","#D3C9B6|sable clair","#2E3A4E|bleu encre","L'option la plus lumineuse. Le contraste vient de l'accent encre — mur du salon, menuiseries ou tête de lit. Le sable flatte le bois clair sans s'y confondre.",1],
+["Craie & Laiton","274","#F6F1E4|craie chaude","#E7E1D3|blanc cassé","#C08A3E|ocre laiton","Le plus clair des huit : sol et murs presque confondus, en camaïeu de blancs chauds. L'élégance vient de l'ocre — luminaires, cadres, poignées, textile.",1],
+["Grège & Olive","88","#F1ECE0|coquille d'œuf","#C9C0AE|grège clair","#66684A|vert olive","Accord végétal et calme, très levantin. L'olive fonctionne en pan de mur dans le séjour ou la chambre ; parfait avec plantes et lin naturel.",0],
+["Perle & Sienne","203","#F7F3EA|blanc chaud","#D2CEC5|gris perle","#A65A3C|terre de Sienne","Base neutre et fraîche, réchauffée par la Sienne — un clin d'œil aux terres cuites syriennes. Accent idéal en crédence, céramiques ou fauteuil.",0],
+["Ficelle & Vert profond","121","#F3EEE1|sable très pâle","#D5CBB8|beige ficelle","#455A4E|vert profond","Neutres chauds en fond, fraîcheur par le vert profond — bibliothèque, porte ou banquette. Très équilibré sous forte lumière.",0],
+["Poudre & Bordeaux","312","#F0E4D8|beige poudré","#DCD2C6|perle rosée","#6E3B3B|bordeaux","Le plus enveloppant, en restant clair : un beige légèrement rosé aux murs, sol perle assorti. Le bordeaux se réserve aux petites surfaces — niche, porte, textile.",0],
+["Ivoire & Indigo","45","#F2EDE1|sable ivoirin","#E2DAC9|ivoire pierre","#35455C|indigo","Version graphique : base ivoire quasi monochrome, contraste net réservé à l'indigo — un mur d'appoint, l'encadrement des ouvertures ou le mobilier d'assise.",0],
+["Lin & Noir doux","260","#EFE8DA|lin","#DED5C3|écru sable","#2E2B28|noir doux","Élégance par le trait : fond lin/écru très clair, et le noir doux qui dessine les détails — poignées, luminaires, cadres, pieds de mobilier.",0]]},
+V2:{titre:"V2 — Épurée",pdf:"Reno_Damas_V2.pdf",
+intro:"Claire et épurée : camaïeux de neutres, accents eux-mêmes neutres et désaturés. La profondeur vient des matières.",
+avis:AVIS_EPURE,
+murs:["#F7F3EA|blanc craie","#F4EFE3|ivoire pâle","#F5F2EB|blanc doux","#F3EDE0|sable très pâle","#F2EEE2|coquille d'œuf","#EFE9DB|lin","#F1F0E4|blanc amandé","#F4EBE1|beige rosé pâle"],
+sols:["#E5E0D4|blanc cassé","#E2DAC9|ivoire pierre","#D8D4CB|gris perle","#D9CFBC|sable clair","#DDD6C6|coquille claire","#DCD3C1|écru sable","#E4DECF|blanc sable","#DFD6CB|perle rosée"],
+accents:["#A9A294|gris galet","#B4A585|ficelle","#9BA0A0|gris brume","#C4A488|argile pâle","#A8AE97|vert sauge","#AFA28C|grège","#C3C6AC|amande pâle","#B5AAA4|gris nuage"]},
+V3:{titre:"V3 — Épurée, murs neutres",pdf:"Reno_Damas_V3.pdf",
+intro:"Comme V2, mais murs volontairement neutres — blancs sans dérive beige ou jaune, légèrement grisés. La chaleur reste au sol et dans le bois, jamais aux murs.",
+avis:AVIS_EPURE,
+murs:["#F7F5F1|blanc craie neutre","#F5F2ED|blanc plâtre","#F5F4F1|blanc doux neutre","#F4F1EC|blanc minéral","#F3F2EE|blanc coquille","#F1EFEA|grège très pâle","#F2F2EE|blanc amandé neutre","#F5F1EE|blanc rosé neutre"],
+sols:["#E5E0D4|blanc cassé","#E2DAC9|ivoire pierre","#D8D4CB|gris perle","#D9CFBC|sable clair","#DDD6C6|coquille claire","#DCD3C1|écru sable","#E4DECF|blanc sable","#DFD6CB|perle rosée"],
+accents:["#A9A294|gris galet","#B4A585|ficelle","#9BA0A0|gris brume","#C4A488|argile pâle","#A8AE97|vert sauge","#AFA28C|grège","#C3C6AC|amande pâle","#B5AAA4|gris nuage"]},
+V4:{titre:"V4 — Claire, sols & murs neutres",pdf:"Reno_Damas_V4.pdf",
+intro:"La plus claire : sols ET murs neutres, sans dérive beige/jaune. Le sol reste d'une demi-valeur plus soutenu que le mur pour ancrer l'espace ; la chaleur vient du bois clair et des matières.",
+avis:AVIS_EPURE,
+murs:["#F7F5F1|blanc craie neutre","#F5F2ED|blanc plâtre","#F5F4F1|blanc doux neutre","#F4F1EC|blanc minéral","#F3F2EE|blanc coquille","#F1EFEA|grège très pâle","#F2F2EE|blanc amandé neutre","#F5F1EE|blanc rosé neutre"],
+sols:["#EBE8E1|blanc cassé neutre","#E7E2D8|craie sable","#E2E0DA|gris perle clair","#E6E1D6|sable grisé clair","#E5E2D9|coquille neutre","#E4DFD5|grège très clair","#EAE8E0|blanc sable neutre","#E6E1DC|perle neutre"],
+accents:["#A9A294|gris galet","#B4A585|ficelle","#9BA0A0|gris brume","#C4A488|argile pâle","#A8AE97|vert sauge","#AFA28C|grège","#C3C6AC|amande pâle","#B5AAA4|gris nuage"]}};
+["V2","V3","V4"].forEach(k=>{V[k].acc=N2.map((n,i)=>{const[nom,wada]=n.split('|');
+  return [nom,wada,V[k].murs[i],V[k].sols[i],V[k].accents[i],DESC2[String(i+1).padStart(2,'0')],(i===1||i===4)?1:0];});});
+let cur='V1';
+const tabs=document.getElementById('tabs');
+tabs.innerHTML=Object.keys(V).map(k=>`<button data-k="${k}">${k}</button>`).join('');
+function sw(s){const[c,label]=s.split('|');return {c,label};}
+function render(){
+  document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('active',b.dataset.k===cur));
+  const v=V[cur];
+  document.getElementById('intro').innerHTML=`<strong>${v.titre}.</strong> ${v.intro}`;
+  document.getElementById('accords').innerHTML=v.acc.map((a,i)=>{
+    const m=sw(a[2]),s=sw(a[3]),ac=sw(a[4]);
+    return `<div class="accord">
+      <h3>${String(i+1).padStart(2,'0')} · ${a[0]} ${a[6]?'<span class="star">★ reco architecte</span>':''}</h3>
+      <div class="wada">D'après Wada — combinaison ${a[1]}</div>
+      <div class="strip"><div style="background:${m.c}"></div><div style="background:${s.c}"></div><div style="background:${ac.c}"></div></div>
+      <div class="labels"><span>Murs · ${m.label}<br>${m.c}</span><span>Sol · ${s.label}<br>${s.c}</span><span>Accent · ${ac.label}<br>${ac.c}</span></div>
+      <p>${a[5]}</p>
+    </div>`;}).join('');
+  document.getElementById('avis').innerHTML=`<h2>Avis de l'architecte — ${cur}</h2>${v.avis}${ETAPE}
+  <br><br><span class="pdfs">Document original : <a href="${v.pdf}">${v.pdf}</a> (PDF, s'ouvre dans le navigateur)</span>`;
+}
+tabs.onclick=e=>{const b=e.target.closest('button');if(b){cur=b.dataset.k;render();}};
+render();
+</script>
+</body>
+</html>
