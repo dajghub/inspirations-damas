@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Sélection d'images — Rénovation Damas</title>
+<style>
+  :root { --ink:#2E2B28; --bg:#F7F5F1; --card:#FFFFFF; --line:#E4DFD5; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:Georgia,'Times New Roman',serif; background:var(--bg); color:var(--ink); }
+  header { padding:32px 40px 16px; }
+  h1 { font-size:26px; margin:0 0 6px; font-weight:normal; }
+  .sub { font-size:14px; color:#6b665e; max-width:820px; line-height:1.5; }
+  .filters { padding:12px 40px 4px; display:flex; gap:8px; flex-wrap:wrap; position:sticky; top:0; background:var(--bg); z-index:5; border-bottom:1px solid var(--line); }
+  .filters button { font-family:inherit; font-size:14px; padding:7px 16px; border:1px solid var(--line); background:var(--card); border-radius:20px; cursor:pointer; }
+  .filters button.active { background:var(--ink); color:#fff; border-color:var(--ink); }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:18px; padding:24px 40px 60px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; overflow:hidden; display:flex; flex-direction:column; }
+  .card img { width:100%; display:block; aspect-ratio:3/3.6; object-fit:cover; background:#eee; }
+  .meta { padding:10px 12px 12px; display:flex; flex-direction:column; gap:6px; }
+  .badges { display:flex; gap:5px; flex-wrap:wrap; }
+  .badge { font-size:11px; letter-spacing:.5px; padding:2px 8px; border-radius:10px; color:#fff; }
+  .v1{background:#2E3A4E}.v2{background:#AFA28C}.v3{background:#9BA0A0}.v4{background:#C9C0AE}
+  .theme { font-size:11px; text-transform:uppercase; letter-spacing:1px; color:#8a8478; }
+  .note { font-size:13px; line-height:1.4; }
+  .warn { font-size:11px; color:#A65A3C; }
+  .meta a { font-size:13px; color:#2E3A4E; }
+  .hidden { display:none; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Sélection d'images — carrelage, murs, accents</h1>
+  <p class="sub">Chaque image est marquée des versions concernées (cf. <em>VERSIONS.md</em>) et d'un thème.
+  Filtrées selon les contraintes fermes : sols clairs en carrelage (pas de parquet), finition satinée, murs blancs/sable,
+  lumière chaude, accents doux (accents profonds tolérés pour V1 uniquement). Sur quelques photos le sol est masqué
+  par un tapis — c'est précisé dans la note. Cliquer « Ouvrir sur Pinterest » pour épingler.</p>
+</header>
+<div class="filters">
+  <button class="active" data-v="all">Toutes</button>
+  <button data-v="V1">V1 — Élégante</button>
+  <button data-v="V2">V2 — Épurée</button>
+  <button data-v="V3">V3 — Murs neutres</button>
+  <button data-v="V4">V4 — Tout neutre</button>
+</div>
+<div class="grid" id="grid"></div>
+<script>
+const P = [
+["4606408493024704128","ae/b6/5b/aeb65b4bd67ee882ec1d4a981a5914cc.jpg",["V1","V2","V3"],"Sol / carrelage","Grès effet béton ciré crème, canapé écru, table bois clair — l'accord sol/mur/bois du projet.",""],
+["39899146694261912","4c/bc/51/4cbc511f4f6bf8c4543e598dffbf007c.jpg",["V1","V2","V3"],"Sol / carrelage","Carrelage 60×60 rectifié ton pierre claire, mobilier chêne clair, murs enduit doux.",""],
+["767793436516439822","80/a8/31/80a8317d383c634ac2418a35e33ff0cd.jpg",["V2","V3"],"Sol / carrelage","Grand format grège satiné, assises écru, buffet chêne clair.",""],
+["969540626068547780","74/a2/df/74a2df322d774a5840d77aef69fb1b32.jpg",["V1"],"Sol / carrelage","Carrelage sable un peu plus soutenu, séjour chaleureux.",""],
+["2392606048502365","53/b9/e3/53b9e304c3c178011431a862ff7da943.jpg",["V2"],"Matières / textiles","Gros plan bois clair + grès satiné crème : le duo matière du 30 %.",""],
+["4609223210883844992","4a/b9/4c/4ab94c6a0a703d93ff0f9a042d423f6a.jpg",["V1"],"Murs / lumière","Murs sable, lumière chaude latérale, contraste boiseries plus soutenues.",""],
+["6333255724959425","03/8b/4b/038b4b416aa60813bb9df155f89896d9.jpg",["V1"],"Accent / détail","Pan de mur bleu encre (proche #2E3A4E) sur base blanche chaude — le 10 % de V1. Sol masqué par le tapis.",""],
+["4593179137746747008","50/87/e2/5087e2e56fd54d6afcbfc21099c2faf8.jpg",["V1"],"Accent / détail","Pan vert profond (proche #455A4E) sur cuisine crème, sol carrelage clair.",""],
+["182606959887956203","1c/7d/8a/1c7d8adce5ac020d0736794d9545aa28.jpg",["V1","V2"],"Accent / détail","Laiton discret (luminaire, objets) sur base ivoire.",""],
+["211174979199801","ba/d2/14/bad21440c1c44fd337d368f0aed21109.jpg",["V1"],"Accent / détail","Robinetterie laiton sur enduit craie (salle de bain).",""],
+["1120270476081277070","23/5e/95/235e95702add2261f51ade72ea9d395b.jpg",["V1","V2"],"Matières / textiles","SdB beige : laiton + bois clair + sol carrelage clair.",""],
+["70437490870709","2b/2f/75/2b2f750b3ed2c8f5dbd7491d9dfa602f.jpg",["V1"],"Ambiance générale","Séjour crème, lustre laiton, contrastes doux.",""],
+["68539225574926761","99/e5/c2/99e5c2fdab4f17811fc5e7c3a9111262.jpg",["V1","V2"],"Ambiance / lumière","Enduit blanc, niches en arc, céramiques bleues désaturées — lumière levantine.",""],
+["47428602326151786","2f/30/15/2f301598c1aca364d3434a23cc887330.jpg",["V1","V2"],"Ambiance générale","Neutres clairs + bloc noir doux en accent.",""],
+["311170655527506626","73/34/c4/7334c401ccfa80127c68c687fddb4857.jpg",["V2"],"Ambiance générale","Camaïeu écru, halo chaud, formes simples.",""],
+["8936899258640079","f5/a7/15/f5a715cf6ef08169f221df04a643dbbf.jpg",["V2"],"Matières / textiles","Ivoire + jute + bois, lumière de fin de journée. Sol masqué par le tapis.",""],
+["33214116019063740","44/a8/62/44a8627cccc2d09677d6f638a750e396.jpg",["V2"],"Matières / textiles","Lin ivoire, plaid, table chêne massif. Sol masqué par le tapis.",""],
+["70437490978753","34/de/53/34de5398f529566ce9870035114981e2.jpg",["V2"],"Ambiance générale","Séjour crème continu, bois clair, tapis discret.",""],
+["70437490983989","9d/61/66/9d616634b12c98c25987bb9b44af3bf1.jpg",["V2","V3"],"Ambiance générale","Arche rétroéclairée, carrelage grège grand format, olivier.",""],
+["4608167654448337792","21/48/62/21486261b7f919512245c38df3c22618.jpg",["V2","V3"],"Ambiance générale","Canapé écru, table ronde bois, grand carrelage clair, lumière chaude.",""],
+["4598316043301296768","bd/ea/50/bdea50a9e0943dfd2e94a3d6a70f2c64.jpg",["V2","V3","V4"],"Accent / détail","Sauge en textiles + triptyque mural désaturé. Sol masqué par le tapis.",""],
+["438186238770049769","49/d6/1c/49d61c44e9e690f92380e6e367fcd39d.jpg",["V2","V3","V4"],"Accent / détail","Mur sauge grisé + carrelage clair moucheté, banc chêne.",""],
+["1266706142037191","ea/dd/a7/eadda7a3530a9b60b608748c2b897bfa.jpg",["V2","V3"],"Matières / textiles","Planche matières : sauge, tasseaux bois, laiton, bouclette crème.",""],
+["4362930884648517","8f/d5/54/8fd5547bc98e048b6f9ea1bc1d0e2031.jpg",["V3"],"Ambiance générale","Murs plâtre blanc neutre (sans dérive jaune), bois, sol pierre très claire.",""],
+["702069029457359197","93/a6/b3/93a6b3626a80a2b0af1bfe175fe8446e.jpg",["V3","V4"],"Sol / carrelage","Grand format grège très clair, murs blancs neutres, canapé bas.",""],
+["1136173812265117399","88/c5/3b/88c53bee1696089ab708bd4c0cd16196.jpg",["V3","V4"],"Ambiance générale","Carrelage clair légèrement grisé, blanc minéral, végétal.",""],
+["300404237667430700","b4/89/2b/b4892bd0ee61f2364e0b118d1af2100e.jpg",["V4"],"Murs / lumière","Circulation ivoire, carrelage pâle satiné, lumière douce.",""],
+["3096293491908820","24/54/02/245402208ee1e858947c9547555c39b1.jpg",["V4"],"Ambiance générale","Monochrome blanc chaud, niches éclairées, sol clair.",""],
+["15058980000693780","10/2b/1d/102b1d5c886987a17a34a2a0f039faf5.jpg",["V4"],"Matières / textiles","Craie + chêne clair, tons pierre, sol une demi-valeur sous le mur.",""],
+["34621490882357897","2e/b5/04/2eb504f1cc1212c49a18ba8a715a6735.jpg",["V4"],"Ambiance générale","Ivoire, cheminée, fauteuil bois clair — la plus claire des ambiances.",""],
+["4603945581649902848","9c/5d/93/9c5d9359b72055ab5a389ee481514d14.jpg",["V2","V3"],"Sol / carrelage","Pièce voûtée, grès aspect travertin clair satiné, canapé ivoire, verrière.",""],
+["4602819691114075520","1e/0f/d1/1e0fd150616563d79dd24e8a09233286.jpg",["V2","V3"],"Ambiance générale","Cuisine îlot chêne clair, carrelage beige aspect travertin, canapé grège.",""],
+["4605704806874404480","e4/69/bc/e469bc24f378f9ec2f9c4a4e5ca65141.jpg",["V2","V3","V4"],"Murs / lumière","Double hauteur baignée de lumière, grand carrelage pâle, canapé écru.",""],
+["692428511504043609","69/70/4d/69704d54e4d36b975aede198596b6716.jpg",["V1"],"Accent / détail","Canapé velours bleu encre + table travertin, rideaux crème. Sol masqué par le tapis.",""],
+["4591701426698053760","0e/8f/10/0e8f10f8a6fab683a6152f282e8efec6.jpg",["V2","V4"],"Sol / carrelage","Chambre : lit plateforme chêne sur carrelage crème grand format.",""],
+["283023157828322853","e5/e3/d2/e5e3d29fa37c522639321fedd4ba1562.jpg",["V3","V4"],"Sol / carrelage","Chambre sous combles, carrelage grège clair, blanc minéral.",""],
+["97460779433211456","0f/8c/18/0f8c18d04ce65aecc430aec00b92a229.jpg",["V1","V2"],"Sol / carrelage","Chambre chaleureuse, carrelage sable à motif discret, lumière dorée.",""]
+];
+const grid=document.getElementById('grid');
+grid.innerHTML=P.map(([id,img,vs,theme,note,warn])=>`
+<div class="card" data-vs="${vs.join(',')}">
+  <a href="https://fr.pinterest.com/pin/${id}/" target="_blank"><img loading="lazy" src="https://i.pinimg.com/474x/${img}" alt=""></a>
+  <div class="meta">
+    <div class="badges">${vs.map(v=>`<span class="badge ${v.toLowerCase()}">${v}</span>`).join('')}</div>
+    <span class="theme">${theme}</span>
+    <span class="note">${note}</span>
+    ${warn?`<span class="warn">⚠ ${warn}</span>`:''}
+    <a href="https://fr.pinterest.com/pin/${id}/" target="_blank">Ouvrir sur Pinterest ↗</a>
+  </div>
+</div>`).join('');
+document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.filters button').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  const v=b.dataset.v;
+  document.querySelectorAll('.card').forEach(c=>c.classList.toggle('hidden',v!=='all'&&!c.dataset.vs.split(',').includes(v)));
+});
+</script>
+</body>
+</html>
