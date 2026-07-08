@@ -38,6 +38,19 @@
     text-decoration:none; border-radius:20px; font-size:14px; }
   .pins { position:absolute; bottom:8px; left:8px; background:rgba(46,43,40,.78); color:#fff;
     font-size:12px; padding:3px 10px; border-radius:12px; }
+  .reco { display:inline-block; font-size:11px; background:#F6F1E4; border:1px solid #C08A3E;
+    color:#7a5a24; padding:2px 8px; border-radius:10px; }
+  .panel { margin:16px 40px 0; padding:16px 20px; background:#fff; border:1px solid var(--line);
+    border-radius:10px; font-size:14px; line-height:1.6; }
+  .panel h2 { font-size:17px; font-weight:normal; margin:0 0 8px; }
+  .panel h3 { font-size:14px; margin:14px 0 4px; }
+  .sw { display:inline-block; width:14px; height:14px; border-radius:3px; border:1px solid rgba(0,0,0,.15);
+    vertical-align:-2px; margin-right:2px; }
+  .panel .quote { color:#6b665e; font-style:italic; }
+  details.trends { margin:16px 40px 0; background:#fff; border:1px solid var(--line); border-radius:10px; }
+  details.trends summary { cursor:pointer; padding:12px 20px; font-size:15px; }
+  details.trends .inner { padding:0 20px 16px; font-size:14px; line-height:1.6; }
+  .tcol { display:inline-block; padding:2px 10px; border-radius:10px; color:#fff; font-size:12px; margin:0 2px; }
 </style>
 </head>
 <body>
@@ -60,10 +73,45 @@
   <button data-v="V2">V2 — Épurée</button>
   <button data-v="V3">V3 — Murs neutres</button>
   <button data-v="V4">V4 — Tout neutre</button>
+  <button data-v="archi">★ Recos architecte</button>
   <button data-v="favs" id="favbtn">♥ Mes favoris (0)</button>
   <button id="sortbtn" title="Épingles les plus enregistrées par la communauté Pinterest en premier">📌 Trier par popularité</button>
 </div>
 <div class="verdict" id="verdict"></div>
+<div class="panel" id="archi" style="display:none">
+  <h2>Avis de l'architecte — combinaisons à privilégier</h2>
+  <h3>V1 — Élégante : <strong>01 · Sable &amp; Encre</strong>
+    <span class="sw" style="background:#F6F2E8"></span><span class="sw" style="background:#D3C9B6"></span><span class="sw" style="background:#2E3A4E"></span></h3>
+  <p class="quote">« Base sable/craie très lumineuse, caractère net par le bleu encre. » Alternative plus douce :
+  <strong>02 · Craie &amp; Laiton</strong> <span class="sw" style="background:#F6F1E4"></span><span class="sw" style="background:#E7E1D3"></span><span class="sw" style="background:#C08A3E"></span></p>
+  <h3>V2 · V3 · V4 — Épurées : <strong>02 · Ivoire &amp; Ficelle</strong>
+    <span class="sw" style="background:#F4EFE3"></span><span class="sw" style="background:#E2DAC9"></span><span class="sw" style="background:#B4A585"></span></h3>
+  <p class="quote">« Le plus naturellement accordé au bois clair. » Pour une pointe de fraîcheur :
+  <strong>05 · Coquille &amp; Sauge</strong> <span class="sw" style="background:#F2EEE2"></span><span class="sw" style="background:#DDD6C6"></span><span class="sw" style="background:#A8AE97"></span>
+  — mêmes accords en V3/V4 avec murs neutres grisés (#F5F2ED, #F3F2EE) et sols une demi-valeur plus clairs en V4.</p>
+  <p><strong>Étape suivante conseillée :</strong> commander 2–3 dalles d'essai des accords retenus et les observer sur place
+  à midi et en fin de journée — la lumière de Damas réchauffe nettement les teintes. Peindre un échantillon mural d'1 m² à côté avant de valider.</p>
+  <p>Les images ci-dessous illustrent ces combinaisons ; l'étiquette dorée ★ indique l'accord, les badges V1–V4 la version.</p>
+</div>
+<details class="trends">
+  <summary>📈 Tendances 2026 (Pinterest Predicts) — où se situent les 4 versions ?</summary>
+  <div class="inner">
+    <p>La palette officielle Pinterest 2026 :
+    <span class="tcol" style="background:#5B7FA6">Cool Blue</span>
+    <span class="tcol" style="background:#5E8A6E">Jade</span>
+    <span class="tcol" style="background:#4A2C3E">Plum Noir</span>
+    <span class="tcol" style="background:#9AA43A">Wasabi</span>
+    <span class="tcol" style="background:#C4593B">Persimmon</span>.
+    Côté styles : matières naturelles et artisanat (« Afrohemian »), murs texturés à la chaux, Neo Deco.</p>
+    <p><strong>Ce que ça signifie pour vos 4 versions :</strong> les accents de <strong>V1</strong> sont les plus « 2026 » —
+    bleu encre/indigo (famille Cool Blue), vert profond et sauge (famille Jade), bordeaux (cousin de Plum Noir),
+    terre de Sienne/argile (Persimmon en version désaturée). Les matières de <strong>V2</strong> (bois, lin, jute,
+    céramique, enduits) sont exactement le socle des tendances 2026.</p>
+    <p><strong>À savoir, honnêtement :</strong> la direction générale 2026 annoncée par Pinterest est plus colorée et
+    expressive que nos fonds neutres — V3 et V4 ne sont pas « tendance » au sens strict. C'est un choix de fond
+    durable plutôt que de mode, et c'est défendable : les tendances tournent vite, un sol se garde 20 ans.</p>
+  </div>
+</details>
 <div class="grid" id="grid"></div>
 <script>
 const P = [
@@ -101,14 +149,40 @@ const P = [
 ["4605704806874404480","e4/69/bc/e469bc24f378f9ec2f9c4a4e5ca65141.jpg",["V2","V3","V4"],"Murs / lumière","Double hauteur baignée de lumière, grand carrelage pâle, canapé écru.",""],
 ["4591701426698053760","0e/8f/10/0e8f10f8a6fab683a6152f282e8efec6.jpg",["V2","V4"],"Sol / carrelage","Chambre : lit plateforme chêne sur carrelage crème grand format.",""],
 ["283023157828322853","e5/e3/d2/e5e3d29fa37c522639321fedd4ba1562.jpg",["V3","V4"],"Sol / carrelage","Chambre sous combles, carrelage grège clair, blanc minéral.",""],
-["97460779433211456","0f/8c/18/0f8c18d04ce65aecc430aec00b92a229.jpg",["V1","V2"],"Sol / carrelage","Chambre chaleureuse, carrelage sable à motif discret, lumière dorée.",""]
+["97460779433211456","0f/8c/18/0f8c18d04ce65aecc430aec00b92a229.jpg",["V1","V2"],"Sol / carrelage","Chambre chaleureuse, carrelage sable à motif discret, lumière dorée.",""],
+["7248049396803791","69/c1/dc/69c1dc1bb36edd3d81f14c9bf9dccfe0.jpg",["V1"],"Accent / détail","Cuisine crème à cadres, poignées laiton, sol travertin clair.",""],
+["2392606049185531","27/3b/8a/273b8a47616c5c5a7cdcaf0b27ed336e.jpg",["V1","V2"],"Ambiance générale","Cuisine îlot taupe clair, fenêtre en arc, grand carrelage crème.",""],
+["4594656902341628288","b2/f5/29/b2f5290f78a6a5564c345e1ed8023ffa.jpg",["V3","V4"],"Ambiance générale","Cuisine blanche minimale, carrelage beige clair, olivier en fond.",""],
+["1548181186703195","bc/b4/bd/bcb4bd6c87eb475f2110c2b76e1498e7.jpg",["V2","V3"],"Ambiance générale","Cuisine chêne clair + crème, éclairage chaud, sol pierre claire.",""],
+["2392606049097589","00/27/cf/0027cf2561cac0ec8bbed92e5ef2bee9.jpg",["V1","V2"],"Matières / textiles","SdB crème : laiton, vasque bois, carrelage clair — la plus populaire de la sélection.",""],
+["4591701378947264000","48/3a/95/483a95e9929ef9853298c41546eaa49e.jpg",["V2","V3"],"Matières / textiles","Douche travertin clair, meuble chêne suspendu, LED chaude.",""],
+["2462974791034527","d7/f4/10/d7f4104197fde42ed55b8909748664b1.jpg",["V1","V2"],"Matières / textiles","Baignoire îlot, travertin clair, robinetterie laiton.",""],
+["1759287349371658","76/e3/5b/76e35ba32c620b558c4ab4b873474313.jpg",["V2"],"Matières / textiles","SdB travertin + bois + laiton doux, miroir rond.",""],
+["86905467802054348","97/f5/bd/97f5bdc704d975d90006cc0a659c6851.jpg",["V2","V3"],"Murs / lumière","Enfilade d'arches enduit blanc, sol pierre pâle, olivier.",""],
+["121315783711239403","7d/d7/1f/7dd71f4d418a53f875152d01a71d9af9.jpg",["V2"],"Matières / textiles","Console chêne sur enduit très pâle, sol travertin.",""],
+["51509989482040763","94/86/22/94862253b835f09cc3205aa8f95f76da.jpg",["V2","V3"],"Accent / détail","Arches plâtre, poteries argile (accent terre), sol pierre très claire.",""],
+["4591842163922175744","60/ca/51/60ca5190a11e5d082e87cf8a4884b829.jpg",["V3","V4"],"Murs / lumière","Entrée blanche épurée, console bois, grand carrelage beige très clair.",""]
 ];
+// Accords recommandés par l'architecte (PDFs Reno_Damas_V1..V4, juillet 2026)
+const RECOS={
+"6333255724959425":"V1 · 01 Sable & Encre","68539225574926761":"V1 · 01 Sable & Encre",
+"182606959887956203":"V1 · 02 Craie & Laiton","211174979199801":"V1 · 02 Craie & Laiton",
+"1120270476081277070":"V1 · 02 Craie & Laiton","70437490870709":"V1 · 02 Craie & Laiton",
+"7248049396803791":"V1 · 02 Craie & Laiton","2392606049097589":"V1 · 02 Craie & Laiton",
+"2462974791034527":"V1 · 02 Craie & Laiton",
+"2392606048502365":"V2-V4 · 02 Ivoire & Ficelle","8936899258640079":"V2-V4 · 02 Ivoire & Ficelle",
+"33214116019063740":"V2-V4 · 02 Ivoire & Ficelle","70437490978753":"V2-V4 · 02 Ivoire & Ficelle",
+"1548181186703195":"V2-V4 · 02 Ivoire & Ficelle","121315783711239403":"V2-V4 · 02 Ivoire & Ficelle",
+"4608167654448337792":"V2-V4 · 02 Ivoire & Ficelle",
+"4598316043301296768":"V2-V4 · 05 Coquille & Sauge","438186238770049769":"V2-V4 · 05 Coquille & Sauge",
+"1266706142037191":"V2-V4 · 05 Coquille & Sauge"
+};
 const grid=document.getElementById('grid');
 const FKEY='damas-favs';
 let favs=new Set(JSON.parse(localStorage.getItem(FKEY)||'[]'));
 let filter='all';
 // Enregistrements Pinterest ("saves") relevés le 8 juillet 2026 — cumul depuis la publication de chaque épingle.
-const SAVES={"4606408493024704128":19,"39899146694261912":138,"969540626068547780":4,"2392606048502365":1409,"4609223210883844992":3,"6333255724959425":450,"4593179137746747008":1,"182606959887956203":17,"211174979199801":3368,"1120270476081277070":539,"70437490870709":1569,"68539225574926761":117,"47428602326151786":2,"311170655527506626":20,"8936899258640079":251,"33214116019063740":77,"70437490978753":6842,"70437490983989":4383,"4608167654448337792":1,"4598316043301296768":3,"438186238770049769":1,"1266706142037191":2676,"4362930884648517":1459,"702069029457359197":2,"1136173812265117399":1,"300404237667430700":96,"3096293491908820":741,"15058980000693780":229,"34621490882357897":127,"4603945581649902848":1,"4602819691114075520":6,"4605704806874404480":7,"4591701426698053760":1,"283023157828322853":15,"97460779433211456":92};
+const SAVES={"7248049396803791":981,"2392606049185531":365,"4594656902341628288":1,"1548181186703195":3231,"2392606049097589":9180,"4591701378947264000":126,"2462974791034527":1582,"1759287349371658":1229,"86905467802054348":54,"121315783711239403":46,"51509989482040763":347,"4591842163922175744":7,"4606408493024704128":19,"39899146694261912":138,"969540626068547780":4,"2392606048502365":1409,"4609223210883844992":3,"6333255724959425":450,"4593179137746747008":1,"182606959887956203":17,"211174979199801":3368,"1120270476081277070":539,"70437490870709":1569,"68539225574926761":117,"47428602326151786":2,"311170655527506626":20,"8936899258640079":251,"33214116019063740":77,"70437490978753":6842,"70437490983989":4383,"4608167654448337792":1,"4598316043301296768":3,"438186238770049769":1,"1266706142037191":2676,"4362930884648517":1459,"702069029457359197":2,"1136173812265117399":1,"300404237667430700":96,"3096293491908820":741,"15058980000693780":229,"34621490882357897":127,"4603945581649902848":1,"4602819691114075520":6,"4605704806874404480":7,"4591701426698053760":1,"283023157828322853":15,"97460779433211456":92};
 const fmt=n=>n>=1000?(n/1000).toFixed(1).replace('.',',')+' k':''+n;
 let sortPop=false;
 function renderGrid(){
@@ -121,7 +195,7 @@ function renderGrid(){
     <span class="pins" title="Nombre de fois où cette épingle a été enregistrée sur Pinterest">📌 ${fmt(SAVES[id]||0)}</span>
   </div>
   <div class="meta">
-    <div class="badges">${vs.map(v=>`<span class="badge ${v.toLowerCase()}">${v}</span>`).join('')}</div>
+    <div class="badges">${vs.map(v=>`<span class="badge ${v.toLowerCase()}">${v}</span>`).join('')}${RECOS[id]?`<span class="reco">★ ${RECOS[id]}</span>`:''}</div>
     <span class="theme">${theme}</span>
     <span class="note">${note}</span>
     ${warn?`<span class="warn">⚠ ${warn}</span>`:''}
@@ -136,10 +210,14 @@ document.getElementById('sortbtn').onclick=()=>{
   renderGrid();refresh();
 };
 function applyFilter(){
+  document.getElementById('archi').style.display=filter==='archi'?'block':'none';
   document.querySelectorAll('.card').forEach(c=>{
-    const vsOk=filter==='all'||c.dataset.vs.split(',').includes(filter);
-    const favOk=filter!=='favs'||favs.has(c.dataset.id);
-    c.classList.toggle('hidden',filter==='favs'?!favOk:!vsOk);
+    let show;
+    if(filter==='all')show=true;
+    else if(filter==='favs')show=favs.has(c.dataset.id);
+    else if(filter==='archi')show=!!RECOS[c.dataset.id];
+    else show=c.dataset.vs.split(',').includes(filter);
+    c.classList.toggle('hidden',!show);
   });
 }
 function refresh(){
