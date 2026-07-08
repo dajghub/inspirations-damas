@@ -2,7 +2,8 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Sélection d'images — Rénovation Damas</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Appartement de Barzeh, Damas — Inspirations rénovation</title>
 <style>
   :root { --ink:#2E2B28; --bg:#F7F5F1; --card:#FFFFFF; --line:#E4DFD5; }
   * { box-sizing:border-box; }
@@ -51,21 +52,44 @@
   details.trends summary { cursor:pointer; padding:12px 20px; font-size:15px; }
   details.trends .inner { padding:0 20px 16px; font-size:14px; line-height:1.6; }
   .tcol { display:inline-block; padding:2px 10px; border-radius:10px; color:#fff; font-size:12px; margin:0 2px; }
+  details.guide { margin:6px 0 0; }
+  details.guide summary { cursor:pointer; font-size:14px; color:#6b665e; }
+  details.guide .sub { margin-top:8px; }
+  @media (max-width:640px){
+    header { padding:16px 14px 8px; }
+    h1 { font-size:20px; }
+    .filters { padding:8px 10px 4px; gap:6px; }
+    .filters button { font-size:13px; padding:6px 12px; }
+    .grid { grid-template-columns:1fr 1fr; gap:10px; padding:14px 10px 40px; }
+    .card img { aspect-ratio:3/3.4; }
+    .meta { padding:8px 9px 10px; gap:4px; }
+    .note { font-size:12px; }
+    .fav { width:34px; height:34px; font-size:17px; line-height:34px; }
+    .verdict,.panel { margin:10px 10px 0; padding:10px 12px; }
+    details.trends { margin:10px 10px 0; }
+  }
 </style>
 </head>
 <body>
 <header>
-  <h1>Sélection d'images — carrelage, murs, accents</h1>
-  <p class="sub">Chaque image est marquée des versions concernées (cf. <em>VERSIONS.md</em>) et d'un thème.
-  Filtrées selon les contraintes fermes : sols clairs en carrelage (pas de parquet), finition satinée, murs blancs/sable,
-  lumière chaude, accents doux (accents profonds tolérés pour V1 uniquement). Sur quelques photos le sol est masqué
-  par un tapis — c'est précisé dans la note. Cliquer « Ouvrir sur Pinterest » pour épingler.
-  <br><strong>Mode d'emploi :</strong> touchez le ♥ sur les images qui vous plaisent, puis envoyez votre
-  sélection via le bouton WhatsApp qui apparaît en haut. Vos favoris restent enregistrés sur votre appareil.
-  <br><strong>📌 :</strong> nombre de fois où l'image a été enregistrée par la communauté Pinterest (relevé
-  du 8 juillet 2026). Attention : c'est un cumul depuis la publication — une épingle récente peut être
-  excellente avec un petit compteur, et la popularité mesure l'attrait de la photo, pas la justesse du
-  choix pour votre appartement.</p>
+  <h1>Appartement de Barzeh · Damas — inspirations carrelage, murs &amp; accents</h1>
+  <p class="sub" style="margin:4px 0"><strong>♥</strong> = j'aime · <strong>📌</strong> = popularité Pinterest · <strong>★</strong> = choix de l'architecte</p>
+  <details class="guide">
+    <summary>ℹ️ Guide détaillé (français)</summary>
+    <p class="sub">Chaque image est marquée des versions concernées (V1–V4) et d'un thème.
+    Filtrées selon les contraintes fermes : sols clairs en carrelage (pas de parquet), finition satinée, murs blancs/sable,
+    lumière chaude, accents doux (accents profonds tolérés pour V1 uniquement). Sur quelques photos le sol est masqué
+    par un tapis — c'est précisé dans la note. Cliquer « Ouvrir sur Pinterest » pour épingler.
+    <br><strong>Qu'est-ce qu'un « accent » ?</strong> C'est la 3ᵉ couleur de chaque version, limitée à ~10 % des surfaces
+    (règle 60 % murs · 30 % sol · 10 % accent) : un pan de mur, une porte, des luminaires, des textiles ou des céramiques.
+    C'est elle qui donne le caractère — les murs et le sol restent neutres et clairs.
+    <br><strong>Mode d'emploi :</strong> touchez le ♥ sur les images qui vous plaisent, puis envoyez votre
+    sélection via le bouton WhatsApp qui apparaît en haut. Vos favoris restent enregistrés sur votre appareil.
+    <br><strong>📌 :</strong> nombre de fois où l'image a été enregistrée par la communauté Pinterest (relevé
+    du 8 juillet 2026). Attention : c'est un cumul depuis la publication — une épingle récente peut être
+    excellente avec un petit compteur, et la popularité mesure l'attrait de la photo, pas la justesse du
+    choix pour votre appartement.</p>
+  </details>
 </header>
 <div class="filters">
   <button class="active" data-v="all">Toutes</button>
